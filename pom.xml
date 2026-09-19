@@ -188,6 +188,7 @@
                     </annotationProcessors>
 
                     <compilerArgs>
+                        <!-- Allow Checker Framework to access javac internals (required on JDK 9+) -->
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
@@ -199,21 +200,33 @@
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
 
+                        <!-- Enable all optional Checker Framework lint checks -->
                         <arg>-Alint=all</arg>
+                        <!-- Treat arrays as invariant (not covariant), matching runtime behavior -->
                         <arg>-AinvariantArrays</arg>
+                        <!-- Strict nullness: a value read twice may have changed in between -->
                         <arg>-AconcurrentSemantics</arg>
+                        <!-- Check element types when casting -->
                         <arg>-AcheckCastElementType</arg>
+                        <!-- Verify purity annotations (@Pure, @SideEffectFree, etc.) -->
                         <arg>-AcheckPurityAnnotations</arg>
+                        <!-- Do not ignore raw type arguments - check them as well -->
                         <arg>-AignoreRawTypeArguments=false</arg>
 
+                        <!-- Warn about unnecessary @SuppressWarnings -->
                         <arg>-AwarnUnneededSuppressions</arg>
+                        <!-- Show the checker prefix in warning messages -->
                         <arg>-AshowPrefixInWarningMessages</arg>
+                        <!-- Require a checker prefix in @SuppressWarnings (e.g. "nullness:...") -->
                         <arg>-ArequirePrefixInWarningSuppressions</arg>
 
+                        <!-- Raise the compile-error limit (javac truncates early by default) -->
                         <arg>-Xmaxerrs</arg>
                         <arg>10000</arg>
+                        <!-- Raise the compile-warning limit -->
                         <arg>-Xmaxwarns</arg>
                         <arg>10000</arg>
+                        <!-- All javac -Xlint checks except classfile (noisy for third-party .class files) -->
                         <arg>-Xlint:all,-classfile</arg>
                     </compilerArgs>
                 </configuration>
